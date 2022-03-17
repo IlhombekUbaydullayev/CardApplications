@@ -11,11 +11,11 @@ import com.example.creditcart_inkotlin.activity.MainActivity
 import com.example.creditcart_inkotlin.model.Card
 import com.example.creditcart_inkotlin.model.CardResp
 
-class CardAdapter(var activity: MainActivity, var items: ArrayList<Card>?) :
+class CardAdapter(var activity: MainActivity, var items: ArrayList<Card>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int {
-        return items!!.size
+        return items.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

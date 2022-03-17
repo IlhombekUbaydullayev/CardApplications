@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.creditcart_inkotlin.R
 import com.example.creditcart_inkotlin.adapter.CardAdapter
+import com.example.creditcart_inkotlin.database.AppDatabase
 import com.example.creditcart_inkotlin.model.Card
 import com.example.creditcart_inkotlin.model.CardResp
 import com.example.creditcart_inkotlin.network.RetrofitHttp
@@ -22,6 +23,7 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var appDatabase: AppDatabase
     lateinit var circle_imageView : CircleImageView
     lateinit var recyclerView : RecyclerView
 
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        appDatabase = AppDatabase.getInstance(this)
         circle_imageView = findViewById(R.id.circle_imageView)
 
         circle_imageView.setOnClickListener {
@@ -47,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 response: Response<ArrayList<Card>?>,
             ) {
                 Log.d("success","response" + response.body())
-                refreshAdapter(response.body())
+                response.body()?.let { refreshAdapter(it) }
             }
 
             override fun onFailure(call: Call<ArrayList<Card>?>, t: Throwable) {
@@ -58,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun refreshAdapter(body: ArrayList<Card>?) {
+    private fun refreshAdapter(body: ArrayList<Card>) {
 
         val adapter = CardAdapter(this, body)
         recyclerView.setAdapter(adapter)
@@ -69,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK){
             var user = result.data
             var user1  = user!!.getSerializableExtra("result")
-
+            appDatabase.postDao().getPosts().toString()
         }
     }
 
