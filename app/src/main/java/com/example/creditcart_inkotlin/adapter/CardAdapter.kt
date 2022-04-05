@@ -1,63 +1,50 @@
 package com.example.creditcart_inkotlin.adapter
 
+
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.creditcart_inkotlin.R
-import com.example.creditcart_inkotlin.activity.MainActivity
 import com.example.creditcart_inkotlin.model.Card
-import com.example.creditcart_inkotlin.model.CardResp
 
-class CardAdapter(var activity: MainActivity, var items: ArrayList<Card>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CardAdapter(val context: Context, ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var items: ArrayList<Card> = ArrayList()
 
-    override fun getItemCount(): Int {
-        return items.size
+    @JvmName("setItems1")
+    @SuppressLint("NotifyDataSetChanged")
+    fun setItems(items: ArrayList<Card>){
+        this.items.addAll(items)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_card_list, parent, false)
-        return PosterViewHolder(view)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_card_list, parent, false)
+        return DemoViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val poster: Card = items!![position]
-        if (holder is PosterViewHolder) {
-            val credit_number = holder.credit_number
-            val explorin_data = holder.explorin_data
-            val holder_name = holder.holder_name
-            val CVV = holder.CVV
-
-            credit_number.setText(poster.credit_number)
-            explorin_data.setText(poster.explorin_data)
-            holder_name.setText(poster.holder_name)
-            CVV.setText(poster.CVV)
-
-        }
+        if (holder is DemoViewHolder)
+            holder.bind(position)
     }
 
-    inner class PosterViewHolder(var view: View) : RecyclerView.ViewHolder(
-        view
-    ) {
-        var credit_number: TextView
-        var explorin_data: TextView
-        var holder_name: TextView
-        var CVV: TextView
+    override fun getItemCount() = items.size
 
-        init {
-            credit_number = view.findViewById(R.id.credit_number)
-            explorin_data = view.findViewById(R.id.explorin_data)
-            holder_name = view.findViewById(R.id.holder_name)
-            CVV = view.findViewById(R.id.CVV)
+    inner class DemoViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+        val tv_card_number: TextView = view.findViewById(R.id.tv_card_number)
+        val tv_holder_name: TextView = view.findViewById(R.id.tv_holder_name)
+        val tv_expires_date: TextView = view.findViewById(R.id.tv_expires_date)
+
+        @SuppressLint("NotifyDataSetChanged")
+        fun bind(position: Int) {
+            val card = items[position]
+
+            tv_card_number.text = card.credit_number
+            tv_holder_name.text = card.holder_name
+            tv_expires_date.text = card.explorin_data
         }
-    }
-
-    init {
-        this.activity = activity
-        this.items = items
     }
 }

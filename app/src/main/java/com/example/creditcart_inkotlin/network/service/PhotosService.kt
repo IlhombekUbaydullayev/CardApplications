@@ -1,7 +1,6 @@
 package com.example.creditcart_inkotlin.network.service
 
 import com.example.creditcart_inkotlin.model.Card
-import com.example.creditcart_inkotlin.model.CardResp
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -22,9 +21,9 @@ interface PhotosService {
     fun createPost(@Body post: Card): Call<Card>
 
     @PUT("cards/{id}")
-    fun updatePost(@Path("id") id: Int, @Body post: Card): Call<CardResp>
+    fun updatePost(@Path("id") id: Int, @Body post: Card): Call<Card>
 
     @DELETE("cards/{id}")
-    fun deletePost(@Path("id") id: Int): Call<CardResp>
+    fun deletePost(@Path("id") id: Int): Call<Card>
 
 }
